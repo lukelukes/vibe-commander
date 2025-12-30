@@ -3,6 +3,8 @@ import path from 'path';
 import solid from 'vite-plugin-solid';
 import { defineConfig } from 'vitest/config';
 
+const headed = process.env.HEADED === 'true';
+
 export default defineConfig({
   test: {
     projects: [
@@ -26,6 +28,7 @@ export default defineConfig({
           browser: {
             provider: webdriverio(),
             enabled: true,
+            headless: !headed,
             instances: [{ browser: 'chrome' }]
           },
           environment: 'node',
