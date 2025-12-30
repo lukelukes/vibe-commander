@@ -1,13 +1,9 @@
 // --- Type Definitions ---
 
-import { JSX } from "solid-js";
-import { render as solidRender } from "solid-js/web";
-import {
-  LocatorSelectors,
-  Locator,
-  PrettyDOMOptions,
-  utils,
-} from "vitest/browser";
+import type { JSX } from 'solid-js';
+
+import { render as solidRender } from 'solid-js/web';
+import { utils, type LocatorSelectors, type Locator, type PrettyDOMOptions } from 'vitest/browser';
 
 /** Options for container/baseElement */
 export interface SolidRenderOptions {
@@ -22,7 +18,7 @@ export interface RenderResult extends LocatorSelectors {
   debug: (
     el?: HTMLElement | HTMLElement[] | Locator | Locator[],
     maxLength?: number,
-    options?: PrettyDOMOptions,
+    options?: PrettyDOMOptions
   ) => void;
   unmount: () => void;
   asFragment: () => DocumentFragment;
@@ -39,16 +35,13 @@ const mountedContainers = new Map<HTMLElement, () => void>();
  */
 export function render(
   component: () => JSX.Element,
-  options: SolidRenderOptions = {},
+  options: SolidRenderOptions = {}
 ): RenderResult {
-  const { container: customContainer, baseElement: customBaseElement } =
-    options;
+  const { container: customContainer, baseElement: customBaseElement } = options;
 
   const { debug: browserDebug, getElementLocatorSelectors } = utils;
-  const baseElement =
-    customBaseElement || customContainer?.parentElement || document.body;
-  const container =
-    customContainer || baseElement.appendChild(document.createElement("div"));
+  const baseElement = customBaseElement || customContainer?.parentElement || document.body;
+  const container = customContainer || baseElement.appendChild(document.createElement('div'));
 
   // Dispose previous instance in the same container if any
   if (mountedContainers.has(container)) {
@@ -81,15 +74,12 @@ export function render(
   return {
     container,
     baseElement,
-    debug: (el = baseElement, maxLength, debugOptions) =>
-      browserDebug(el, maxLength, debugOptions),
+    debug: (el = baseElement, maxLength, debugOptions) => browserDebug(el, maxLength, debugOptions),
     unmount,
     asFragment: (): DocumentFragment => {
-      return document
-        .createRange()
-        .createContextualFragment(container.innerHTML);
+      return document.createRange().createContextualFragment(container.innerHTML);
     },
-    ...getElementLocatorSelectors(baseElement),
+    ...getElementLocatorSelectors(baseElement)
   };
 }
 

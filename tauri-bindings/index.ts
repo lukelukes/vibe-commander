@@ -12,6 +12,14 @@ async listDirectory(path: string) : Promise<Result<FileEntry[], AppError>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async getInitialDirectory() : Promise<Result<string, AppError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_initial_directory") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -26,7 +34,7 @@ async listDirectory(path: string) : Promise<Result<FileEntry[], AppError>> {
 /** user-defined types **/
 
 export type AppError = { type: "Io"; message: string; path: string | null } | { type: "PermissionDenied"; path: string } | { type: "NotFound"; path: string } | { type: "InvalidPath"; message: string }
-export type FileEntry = { name: string; path: string; size: number; modified: number | null; is_dir: boolean; is_symlink: boolean; symlink_target: string | null }
+export type FileEntry = { type: "File"; name: string; path: string; size: number; modified: number | null } | { type: "Directory"; name: string; path: string; modified: number | null } | { type: "Symlink"; name: string; path: string; size: number; modified: number | null; target: string; target_is_dir: boolean } | { type: "Unreadable"; name: string; path: string; reason: string }
 
 /** tauri-specta globals **/
 

@@ -32,16 +32,11 @@ impl TestFixture {
         path
     }
 
-    pub fn create_nested_structure(&self, files: &[(&str, &str)]) {
-        for (name, content) in files {
-            let path = self.dir.path().join(name);
-            if let Some(parent) = path.parent() {
-                fs::create_dir_all(parent).expect("Failed to create parent dirs");
-            }
-            let mut file = File::create(&path).expect("Failed to create file");
-            file.write_all(content.as_bytes())
-                .expect("Failed to write file");
-        }
+    #[cfg(unix)]
+    pub fn create_symlink(&self, name: &str, target: &str) -> PathBuf {
+        let path = self.dir.path().join(name);
+        std::os::unix::fs::symlink(target, &path).expect("Failed to create symlink");
+        path
     }
 }
 

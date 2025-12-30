@@ -1,9 +1,9 @@
 [package]
 name = "vibe-commander"
 version = "0.1.0"
-description = "A Tauri App"
+description = "A simple and effective file commander"
 authors = ["you"]
-edition = "2021"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -15,18 +15,19 @@ name = "vibe_commander_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "2", features = [] }
+tauri-build = { version = "2.5.3", features = [] }
 
 [dependencies]
-tauri = { version = "2", features = [] }
-tauri-plugin-opener = "2"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-thiserror = "2"
+tauri = { version = "2.9.5", features = [] }
+tauri-plugin-opener = "2.5.2"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.148"
+thiserror = "2.0.17"
 specta = { version = "=2.0.0-rc.22", features = ["derive"] }
-specta-typescript = "0.0.9"
+
 tauri-specta = { version = "=2.0.0-rc.21", features = ["derive", "typescript"] }
+specta-typescript = "0.0.9"
+dirs = "6.0.0"
 
 [dev-dependencies]
-tempfile = "3"
-
+tempfile = "3.24.0"

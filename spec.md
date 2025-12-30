@@ -13,13 +13,13 @@ A minimal, fast, dual-pane file manager for Linux and macOS inspired by Total Co
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Tauri 2.x |
-| Frontend | Solid.js + TypeScript |
-| Backend | Rust |
-| Config | TOML (XDG: `~/.config/vibecommander/`) |
-| Platforms | Linux, macOS |
+| Layer     | Technology                             |
+| --------- | -------------------------------------- |
+| Framework | Tauri 2.x                              |
+| Frontend  | Solid.js + TypeScript                  |
+| Backend   | Rust                                   |
+| Config    | TOML (XDG: `~/.config/vibecommander/`) |
+| Platforms | Linux, macOS                           |
 
 ---
 
@@ -54,6 +54,7 @@ A minimal, fast, dual-pane file manager for Linux and macOS inspired by Total Co
 ### File List Columns
 
 MVP columns (standard view):
+
 - Name (with type icon)
 - Size
 - Modified date
@@ -61,6 +62,7 @@ MVP columns (standard view):
 Post-MVP: Configurable columns (permissions, owner, extension, etc.)
 
 **Column behavior**:
+
 - User-resizable via drag
 - Sortable per-pane
 - Persist widths in config
@@ -74,6 +76,7 @@ Post-MVP: Configurable columns (permissions, owner, extension, etc.)
 ### Status Bar
 
 Full context display:
+
 - Selection summary: item count + total size
 - Current directory item count
 - Free disk space
@@ -84,17 +87,17 @@ Full context display:
 
 ### Keyboard
 
-| Key | Action |
-|-----|--------|
-| ↑/↓ | Move cursor |
-| Enter | Enter directory / Open file |
-| Backspace | Go to parent directory |
-| Tab | Switch focus between panes |
-| Alt+← | Navigate back in history |
-| Alt+→ | Navigate forward in history |
-| Home | First item |
-| End | Last item |
-| Page Up/Down | Page scroll |
+| Key          | Action                      |
+| ------------ | --------------------------- |
+| ↑/↓          | Move cursor                 |
+| Enter        | Enter directory / Open file |
+| Backspace    | Go to parent directory      |
+| Tab          | Switch focus between panes  |
+| Alt+←        | Navigate back in history    |
+| Alt+→        | Navigate forward in history |
+| Home         | First item                  |
+| End          | Last item                   |
+| Page Up/Down | Page scroll                 |
 
 ### Quick Filter
 
@@ -120,12 +123,12 @@ Full context display:
 
 ## Selection
 
-| Input | Behavior |
-|-------|----------|
-| Space | Toggle selection on current item, cursor moves down |
-| Shift+↑/↓ | Extend selection range |
-| Ctrl+A / Cmd+A | Select all |
-| Escape | Clear selection |
+| Input          | Behavior                                            |
+| -------------- | --------------------------------------------------- |
+| Space          | Toggle selection on current item, cursor moves down |
+| Shift+↑/↓      | Extend selection range                              |
+| Ctrl+A / Cmd+A | Select all                                          |
+| Escape         | Clear selection                                     |
 
 ---
 
@@ -140,6 +143,7 @@ Full context display:
 ### Conflict Resolution
 
 Marta/TC style dialog:
+
 - **Replace**: Overwrite existing file
 - **Keep Both**: Auto-rename with suffix
 - **Skip**: Do not copy this file
@@ -161,9 +165,9 @@ Marta/TC style dialog:
 
 ### Delete
 
-| Key | Action |
-|-----|--------|
-| F8 or Delete | Move to system trash (reversible) |
+| Key          | Action                               |
+| ------------ | ------------------------------------ |
+| F8 or Delete | Move to system trash (reversible)    |
 | Shift+Delete | Permanent delete (with confirmation) |
 
 ### Rename
@@ -176,10 +180,10 @@ Marta/TC style dialog:
 
 ### Create
 
-| Key | Action |
-|-----|--------|
-| F7 | Create new folder (inline naming) |
-| Shift+F7 | Create new file (inline naming) |
+| Key      | Action                            |
+| -------- | --------------------------------- |
+| F7       | Create new folder (inline naming) |
+| Shift+F7 | Create new file (inline naming)   |
 
 Also available via command palette.
 
@@ -195,6 +199,7 @@ Also available via command palette.
 ### Shell Command Execution
 
 Simple substitution syntax:
+
 ```
 vim {file}           # Current file
 tar -czf archive.tar.gz {selection}  # All selected files
@@ -203,19 +208,20 @@ git status {dir}     # Current directory
 
 ### Placeholders
 
-| Placeholder | Expands to |
-|-------------|-----------|
-| `{file}` | Current file path |
-| `{files}` | All selected file paths (space-separated) |
-| `{selection}` | Same as {files} |
-| `{dir}` | Current directory path |
-| `{filename}` | Current filename without path |
-| `{basename}` | Filename without extension |
-| `{ext}` | File extension |
+| Placeholder   | Expands to                                |
+| ------------- | ----------------------------------------- |
+| `{file}`      | Current file path                         |
+| `{files}`     | All selected file paths (space-separated) |
+| `{selection}` | Same as {files}                           |
+| `{dir}`       | Current directory path                    |
+| `{filename}`  | Current filename without path             |
+| `{basename}`  | Filename without extension                |
+| `{ext}`       | File extension                            |
 
 ### Built-in Actions
 
 Ship with curated defaults:
+
 - Open in terminal
 - Open in default editor
 - Copy path to clipboard
@@ -250,11 +256,13 @@ Users can add custom actions in config.
 ## Bookmarks
 
 MVP:
+
 - Simple flat list of bookmarked paths
 - Hotkey to open bookmarks panel
 - Add current location to bookmarks
 
 Post-MVP:
+
 - Nested groups (Work, Personal, Projects)
 - Drag to reorder
 
@@ -263,6 +271,7 @@ Post-MVP:
 ## Theming
 
 Fully themeable from the start:
+
 - Theme files in `~/.config/vibecommander/themes/`
 - CSS variables for all colors
 - Ship with dark theme default
@@ -270,6 +279,7 @@ Fully themeable from the start:
 - Follow system preference option
 
 Theme covers:
+
 - Background colors (panes, statusbar, dialogs)
 - Text colors (normal, selected, cursor)
 - Accent colors (selection, highlights)
@@ -330,27 +340,28 @@ search_timeout = 5000              # Timeout in ms for search operations
 ### Keybindings
 
 Fully customizable:
+
 - All bindings configurable via TOML
 - Mix of TC-style (F-keys) and modern (Cmd/Ctrl combos)
 
 Default keybind reference:
 
-| Function | Linux | macOS |
-|----------|-------|-------|
-| Copy | F5 | F5 |
-| Move | F6 | F6 |
-| Delete | F8 | F8 |
-| Mkdir | F7 | F7 |
-| Rename | F2 | F2 |
-| View | F3 | F3 |
-| Edit | F4 | F4 |
-| Refresh | Ctrl+R | Cmd+R |
+| Function        | Linux        | macOS       |
+| --------------- | ------------ | ----------- |
+| Copy            | F5           | F5          |
+| Move            | F6           | F6          |
+| Delete          | F8           | F8          |
+| Mkdir           | F7           | F7          |
+| Rename          | F2           | F2          |
+| View            | F3           | F3          |
+| Edit            | F4           | F4          |
+| Refresh         | Ctrl+R       | Cmd+R       |
 | Command Palette | Ctrl+Shift+P | Cmd+Shift+P |
-| Fuzzy Jump | Ctrl+P | Cmd+P |
-| Toggle Hidden | Ctrl+H | Cmd+Shift+. |
-| Go to Path | Ctrl+G | Cmd+Shift+G |
-| Open | Enter | Enter |
-| Open With... | Shift+Enter | Shift+Enter |
+| Fuzzy Jump      | Ctrl+P       | Cmd+P       |
+| Toggle Hidden   | Ctrl+H       | Cmd+Shift+. |
+| Go to Path      | Ctrl+G       | Cmd+Shift+G |
+| Open            | Enter        | Enter       |
+| Open With...    | Shift+Enter  | Shift+Enter |
 
 ---
 
@@ -379,11 +390,11 @@ vc --help
 
 ### Options
 
-| Flag | Description |
-|------|-------------|
+| Flag                   | Description                                              |
+| ---------------------- | -------------------------------------------------------- |
 | `--pane <left\|right>` | Open path in specified pane (new tab if instance exists) |
-| `--version` | Print version and exit |
-| `--help` | Print help and exit |
+| `--version`            | Print version and exit                                   |
+| `--help`               | Print help and exit                                      |
 
 ### Single Instance Behavior
 
@@ -400,6 +411,7 @@ vc --help
 MVP: Use system default via `xdg-open` (Linux) / `open` (macOS)
 
 Post-MVP: Configurable per-type handlers:
+
 ```toml
 [handlers]
 "*.md" = "code"
@@ -412,6 +424,7 @@ Post-MVP: Configurable per-type handlers:
 ## Permission Handling
 
 When navigating to a directory without read permission:
+
 1. Show error notification
 2. Offer "Retry with elevated permissions" option
 3. Use `pkexec` (Linux) / privilege escalation (macOS) to retry
@@ -421,6 +434,7 @@ When navigating to a directory without read permission:
 ## Filesystem Watching
 
 **Smart hybrid approach**:
+
 - **When focused**: Watch current directories via inotify/FSEvents, auto-refresh on changes
 - **When backgrounded**: Pause watching to save resources
 - **Debounce events**: 100ms window to coalesce rapid filesystem changes
@@ -433,14 +447,14 @@ When navigating to a directory without read permission:
 
 ### Targets
 
-| Metric | Target | Rationale |
-|--------|--------|-----------|
-| Window visible | < 100ms | Perceived instant |
-| Fully interactive | < 500ms | Acceptable for Tauri/WebView |
-| Directory listing (1k files) | < 16ms | Single frame |
-| Fuzzy search response | < 50ms | Feels instant |
-| Memory footprint (idle) | < 150MB | Reasonable for GUI app |
-| Binary size | < 20MB | Tauri advantage |
+| Metric                       | Target  | Rationale                    |
+| ---------------------------- | ------- | ---------------------------- |
+| Window visible               | < 100ms | Perceived instant            |
+| Fully interactive            | < 500ms | Acceptable for Tauri/WebView |
+| Directory listing (1k files) | < 16ms  | Single frame                 |
+| Fuzzy search response        | < 50ms  | Feels instant                |
+| Memory footprint (idle)      | < 150MB | Reasonable for GUI app       |
+| Binary size                  | < 20MB  | Tauri advantage              |
 
 ### Directory Loading
 
@@ -469,6 +483,7 @@ When navigating to a directory without read permission:
 ## Session Persistence
 
 Restore on launch:
+
 - Pane locations (left/right paths)
 - Open tabs per pane
 - Scroll position per tab
@@ -482,11 +497,13 @@ Store in: `~/.local/state/vibecommander/session.json`
 ## Error Handling
 
 **Adaptive verbosity**:
+
 - Default: User-friendly message ("Cannot read folder")
 - Expandable: "Show details" reveals errno, full path, underlying error
 - Logged: Full technical details to `~/.local/state/vibecommander/logs/`
 
 **Sound feedback**:
+
 - Play system error sound on permission/access errors
 - Configurable: can be disabled in config `[sounds]` section
 
@@ -556,39 +573,6 @@ Store in: `~/.local/state/vibecommander/session.json`
 
 ---
 
-## Project Structure (Proposed)
-
-```
-vibecommander/
-├── src-tauri/           # Rust backend
-│   ├── src/
-│   │   ├── main.rs
-│   │   ├── commands/    # Tauri command handlers
-│   │   ├── fs/          # Filesystem operations
-│   │   ├── config/      # Config loading/saving
-│   │   ├── watch/       # FS watching
-│   │   └── actions/     # Shell action execution
-│   └── Cargo.toml
-├── src/                 # Solid.js frontend
-│   ├── components/
-│   │   ├── Pane/
-│   │   ├── FileList/
-│   │   ├── PathBar/
-│   │   ├── StatusBar/
-│   │   ├── CommandPalette/
-│   │   ├── Dialog/
-│   │   └── Tabs/
-│   ├── stores/          # Solid.js reactive stores
-│   ├── hooks/           # Custom hooks
-│   ├── styles/          # CSS/themes
-│   ├── lib/             # Utilities
-│   └── App.tsx
-├── config/              # Default config templates
-└── themes/              # Built-in themes
-```
-
----
-
 ## Design Notes
 
 ### Why Tauri over Electron?
@@ -629,10 +613,12 @@ vibecommander/
 ## Visual Design Decisions
 
 ### Icons
+
 - **MVP**: System theme icons (freedesktop icon theme on Linux, SF Symbols on macOS)
 - **Post-MVP**: Configurable - option to use bundled consistent icon set
 
 ### Typography
+
 - **MVP**: System default UI font
 - **Post-MVP**: Customizable font in settings
 

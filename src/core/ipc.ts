@@ -1,4 +1,4 @@
-import { invoke } from "@tauri-apps/api/core";
+import { invoke } from '@tauri-apps/api/core';
 
 export interface FileEntry {
   name: string;
@@ -11,5 +11,5 @@ export interface FileEntry {
 }
 
 export async function listDirectory(path: string): Promise<FileEntry[]> {
-  return invoke("list_directory", { path });
+  return invoke('list_directory', { path });
 }
