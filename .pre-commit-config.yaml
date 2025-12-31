@@ -17,6 +17,7 @@ repos:
         language: system
         types: [rust]
         pass_filenames: false
+        stages: [pre-commit]
 
       - id: cargo-clippy
         name: cargo clippy
@@ -24,6 +25,7 @@ repos:
         language: system
         types: [rust]
         pass_filenames: false
+        stages: [pre-commit]
 
       - id: oxfmt
         name: oxfmt check
@@ -31,6 +33,7 @@ repos:
         language: system
         types_or: [ts, tsx, javascript, jsx]
         pass_filenames: false
+        stages: [pre-commit]
 
       - id: oxlint
         name: oxlint
@@ -38,6 +41,15 @@ repos:
         language: system
         types_or: [ts, tsx, javascript, jsx]
         pass_filenames: false
+        stages: [pre-commit]
+
+      - id: eslint-solidjs
+        name: ESLint + autofix
+        entry: bunx eslint --fix
+        language: system
+        types_or: [ts, tsx]
+        pass_filenames: true
+        stages: [pre-commit]
 
       - id: cargo-test
         name: cargo test
