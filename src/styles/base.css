@@ -19,7 +19,7 @@ body {
   font-size: var(--font-size-base);
   line-height: 1.4;
   color: var(--text);
-  background-color: var(--bg);
+  background-color: var(--bg-surface);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
