@@ -89,7 +89,7 @@
 
 .file-list__row[data-selected='true'] {
   background-color: var(--bg-selected);
-  color: oklch(1 0 0);
+  color: var(--text-on-accent);
 }
 
 .file-list__row[data-selected='true']:hover {
@@ -98,7 +98,7 @@
 
 .file-list__row[data-cursor='true'] {
   background-color: var(--bg-cursor);
-  color: oklch(1 0 0);
+  color: var(--text-on-accent);
 }
 
 .file-list__col {
@@ -136,7 +136,7 @@
 
 .file-list__row[data-selected='true'] .file-list__col-name,
 .file-list__row[data-cursor='true'] .file-list__col-name {
-  color: oklch(1 0 0);
+  color: var(--text-on-accent);
 }
 
 .file-list__col-size {
@@ -159,7 +159,7 @@
 .file-list__row[data-selected='true'] .file-list__col-date,
 .file-list__row[data-cursor='true'] .file-list__col-size,
 .file-list__row[data-cursor='true'] .file-list__col-date {
-  color: oklch(1 0 0);
+  color: var(--text-on-accent);
   opacity: 0.9;
 }
 

@@ -1,5 +1,8 @@
 import './app.css';
+import { initializeTheme } from '#core/theme';
 import { Pane } from '#features/pane';
+
+initializeTheme();
 
 function App() {
   return (
