@@ -49,6 +49,7 @@
   --bg-selected: var(--p-blue-700);
   --bg-selected-inactive: var(--p-zinc-700);
   --bg-cursor: var(--p-blue-600);
+  --bg-cursor-inactive: var(--p-zinc-700);
 
   --border: var(--p-zinc-800);
   --border-subtle: oklch(1 0 0 / 0.06);
@@ -88,6 +89,7 @@
     --bg-selected: var(--p-blue-600);
     --bg-selected-inactive: var(--p-zinc-300);
     --bg-cursor: var(--p-blue-500);
+    --bg-cursor-inactive: var(--p-zinc-300);
 
     --border: var(--p-zinc-200);
     --border-subtle: oklch(0 0 0 / 0.08);
@@ -126,6 +128,7 @@
   --bg-selected: var(--p-blue-600);
   --bg-selected-inactive: var(--p-zinc-300);
   --bg-cursor: var(--p-blue-500);
+  --bg-cursor-inactive: var(--p-zinc-300);
 
   --border: var(--p-zinc-200);
   --border-subtle: oklch(0 0 0 / 0.08);
@@ -162,6 +165,7 @@
   --color-bg-selected: var(--bg-selected);
   --color-bg-selected-inactive: var(--bg-selected-inactive);
   --color-bg-cursor: var(--bg-cursor);
+  --color-bg-cursor-inactive: var(--bg-cursor-inactive);
 
   --color-border: var(--border);
   --color-border-subtle: var(--border-subtle);

@@ -1,179 +1,52 @@
 @import './styles/main.css';
 
-.app {
-  display: flex;
-  height: 100%;
-  width: 100%;
-}
-
-.pane {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-surface);
-  color: var(--text);
-  overflow: hidden;
-}
-
-.left-pane {
-  border-right: 1px solid var(--border);
-}
-
-.right-pane {
-  border-left: none;
-}
-
-.pane-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.pane-loading,
-.pane-error {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: var(--text-muted);
-  font-size: var(--font-size-sm);
-}
-
-.pane-error {
-  color: var(--error);
-}
-
-.file-list {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-}
-
-.file-list__header {
-  display: flex;
-  flex-shrink: 0;
-  padding-right: var(--scrollbar-width, 10px);
-  background-color: var(--bg-subtle);
-  border-bottom: 1px solid var(--border-subtle);
-  font-weight: 500;
-  font-size: var(--font-size-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  color: var(--text-muted);
-}
-
-.file-list__body {
-  flex: 1;
-  overflow-y: scroll;
-  min-height: 0;
-}
-
-.file-list__row {
-  display: flex;
-  height: 24px;
-  align-items: center;
-  cursor: default;
-  user-select: none;
-}
-
-.file-list__row:nth-child(odd) {
+.file-row:nth-child(odd) {
   background-color: var(--bg-row-alt);
 }
 
-.file-list__row:hover {
+.file-row:hover {
   background-color: var(--bg-row-hover);
 }
 
-.file-list__row[data-selected='true'] {
+.file-row[data-selected='true'] {
   background-color: var(--bg-selected);
   color: var(--text-on-accent);
 }
 
-.file-list__row[data-selected='true']:hover {
+.file-row[data-selected='true']:hover {
   background-color: var(--bg-selected);
 }
 
-.file-list__row[data-cursor='true'] {
+.file-row[data-cursor='true'] {
   background-color: var(--bg-cursor);
   color: var(--text-on-accent);
 }
 
-.file-list__col {
-  padding: 0 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 24px;
-}
-
-.file-list__col-icon {
-  width: 28px;
-  flex-shrink: 0;
-  text-align: center;
-  font-size: 14px;
-}
-
-.file-list__col-name {
-  flex: 1;
-  min-width: 0;
-}
-
-.file-list__row[data-entry-type='directory'] .file-list__col-name {
+.file-row[data-entry-type='directory'] .file-col-name {
   color: var(--text-directory);
 }
 
-.file-list__row[data-entry-type='symlink'] .file-list__col-name {
+.file-row[data-entry-type='symlink'] .file-col-name {
   color: var(--text-symlink);
 }
 
-.file-list__row[data-entry-type='unreadable'] .file-list__col-name {
+.file-row[data-entry-type='unreadable'] .file-col-name {
   color: var(--error);
   opacity: 0.7;
 }
 
-.file-list__row[data-selected='true'] .file-list__col-name,
-.file-list__row[data-cursor='true'] .file-list__col-name {
+.file-row[data-selected='true'] .file-col-name,
+.file-row[data-cursor='true'] .file-col-name {
   color: var(--text-on-accent);
 }
 
-.file-list__col-size {
-  width: 80px;
-  flex-shrink: 0;
-  text-align: right;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.file-list__col-date {
-  width: 140px;
-  flex-shrink: 0;
-  text-align: right;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.file-list__row[data-selected='true'] .file-list__col-size,
-.file-list__row[data-selected='true'] .file-list__col-date,
-.file-list__row[data-cursor='true'] .file-list__col-size,
-.file-list__row[data-cursor='true'] .file-list__col-date {
+.file-row[data-selected='true'] .file-col-meta,
+.file-row[data-cursor='true'] .file-col-meta {
   color: var(--text-on-accent);
   opacity: 0.9;
 }
 
-.file-list__header .file-list__col {
-  height: 28px;
-  line-height: 28px;
-}
-
-.pane[data-focused='true'] {
-  --bg-selected: var(--p-blue-700);
-  --bg-cursor: var(--p-blue-600);
-}
-
-.pane[data-focused='false'] {
+[data-focused='false'] {
   --bg-selected: var(--bg-selected-inactive);
-  --bg-cursor: var(--bg-selected-inactive);
+  --bg-cursor: var(--bg-cursor-inactive);
 }
