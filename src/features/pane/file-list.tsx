@@ -116,36 +116,44 @@ export function FileList(props: FileListProps) {
     bodyRef?.removeEventListener('wheel', handleWheel);
   });
 
+  const colBase = 'px-2 truncate leading-6';
+
   return (
-    <div class="file-list">
-      <div class="file-list__header">
-        <span class="file-list__col file-list__col-icon"></span>
-        <span class="file-list__col file-list__col-name">Name</span>
-        <span class="file-list__col file-list__col-size">Size</span>
-        <span class="file-list__col file-list__col-date">Modified</span>
+    <div class="flex flex-col flex-1 min-h-0">
+      <div class="flex shrink-0 pr-[10px] bg-bg-subtle border-b border-border-subtle font-medium text-xs uppercase tracking-wide text-text-muted">
+        <span class={`${colBase} w-7 shrink-0 text-center text-sm h-7 leading-7`}></span>
+        <span class={`${colBase} flex-1 min-w-0 h-7 leading-7`}>Name</span>
+        <span class={`${colBase} w-20 shrink-0 text-right h-7 leading-7`}>Size</span>
+        <span class={`${colBase} w-[140px] shrink-0 text-right h-7 leading-7`}>Modified</span>
       </div>
-      <div class="file-list__body" ref={bodyRef} data-testid="file-list-body">
+      <div class="flex-1 overflow-y-scroll min-h-0" ref={bodyRef} data-testid="file-list-body">
         <For each={props.entries}>
           {(entry) => (
             <div
-              class="file-list__row"
+              class="file-row flex h-6 items-center cursor-default select-none"
               data-testid="file-entry"
               data-entry-type={getEntryTypeAttr(entry)}
             >
               <span
-                class="file-list__col file-list__col-icon"
+                class={`${colBase} w-7 shrink-0 text-center text-sm`}
                 data-testid="entry-type"
                 data-entry-type={getEntryTypeAttr(entry)}
               >
                 {getEntryIcon(entry)}
               </span>
-              <span class="file-list__col file-list__col-name" data-testid="entry-name">
+              <span class={`${colBase} flex-1 min-w-0 file-col-name`} data-testid="entry-name">
                 {entry.name}
               </span>
-              <span class="file-list__col file-list__col-size" data-testid="entry-size">
+              <span
+                class={`${colBase} w-20 shrink-0 text-right text-text-muted tabular-nums file-col-meta`}
+                data-testid="entry-size"
+              >
                 {getEntrySize(entry)}
               </span>
-              <span class="file-list__col file-list__col-date" data-testid="entry-date">
+              <span
+                class={`${colBase} w-[140px] shrink-0 text-right text-text-muted tabular-nums file-col-meta`}
+                data-testid="entry-date"
+              >
                 {getEntryModified(entry)}
               </span>
             </div>

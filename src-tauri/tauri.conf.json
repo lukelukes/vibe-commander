@@ -14,7 +14,8 @@
       {
         "title": "vibe-commander",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "backgroundColor": [24, 24, 27, 255]
       }
     ],
     "security": {

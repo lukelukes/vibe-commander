@@ -11,14 +11,20 @@ export function Pane() {
   });
 
   return (
-    <div class="pane-content">
+    <div class="w-full h-full flex flex-col overflow-hidden">
       <Show when={state.loading}>
-        <div class="pane-loading" data-testid="pane-loading">
+        <div
+          class="flex items-center justify-center h-full text-text-muted text-sm"
+          data-testid="pane-loading"
+        >
           Loading...
         </div>
       </Show>
       <Show when={state.error}>
-        <div class="pane-error" data-testid="pane-error">
+        <div
+          class="flex items-center justify-center h-full text-error text-sm"
+          data-testid="pane-error"
+        >
           {state.error}
         </div>
       </Show>

@@ -1,13 +1,22 @@
 import './app.css';
+import { initializeTheme } from '#core/theme';
 import { Pane } from '#features/pane';
+
+initializeTheme();
 
 function App() {
   return (
-    <div class="app">
-      <div class="pane left-pane" data-testid="pane-left">
+    <div class="flex h-full w-full">
+      <div
+        class="flex-1 flex flex-col bg-bg-surface text-text overflow-hidden border-r border-border"
+        data-testid="pane-left"
+      >
         <Pane />
       </div>
-      <div class="pane right-pane" data-testid="pane-right">
+      <div
+        class="flex-1 flex flex-col bg-bg-surface text-text overflow-hidden"
+        data-testid="pane-right"
+      >
         <Pane />
       </div>
     </div>
