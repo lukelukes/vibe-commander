@@ -10,7 +10,7 @@ function createMockService(overrides: Partial<DirectoryService> = {}): Directory
   return {
     listDirectory: vi.fn().mockResolvedValue({ ok: true, entries: [] }),
     getInitialDirectory: vi.fn().mockResolvedValue('/home/user'),
-    openFile: vi.fn().mockResolvedValue(null),
+    openFile: vi.fn().mockResolvedValue({ ok: true }),
     ...overrides
   };
 }

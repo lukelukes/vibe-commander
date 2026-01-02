@@ -4,10 +4,12 @@ export type ListDirectoryResult =
   | { ok: true; entries: FileEntry[] }
   | { ok: false; error: AppError };
 
+export type OpenFileResult = { ok: true } | { ok: false; error: AppError };
+
 export interface DirectoryService {
   listDirectory(path: string): Promise<ListDirectoryResult>;
   getInitialDirectory(): Promise<string>;
-  openFile(path: string): Promise<AppError | null>;
+  openFile(path: string): Promise<OpenFileResult>;
 }
 
 export function createDirectoryService(): DirectoryService {
@@ -28,12 +30,12 @@ export function createDirectoryService(): DirectoryService {
       const msg = 'message' in err ? err.message : `${err.type}: ${err.path}`;
       throw new Error(msg);
     },
-    async openFile(path: string): Promise<AppError | null> {
+    async openFile(path: string): Promise<OpenFileResult> {
       const result = await commands.openFile(path);
       if (result.status === 'ok') {
-        return null;
+        return { ok: true };
       }
-      return result.error;
+      return { ok: false, error: result.error };
     }
   };
 }
