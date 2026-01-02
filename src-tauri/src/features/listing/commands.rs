@@ -105,19 +105,12 @@ pub fn get_initial_directory() -> Result<PathBuf, AppError> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn open_file(path: &str, app: tauri::AppHandle) -> Result<(), AppError> {
-    let path = path.to_owned();
-    tauri::async_runtime::spawn_blocking(move || {
-        app.opener()
-            .open_path(&path, None::<&str>)
-            .map_err(|e| AppError::OpenFailed {
-                path: PathBuf::from(&path),
-                reason: e.to_string(),
-            })
-    })
-    .await
-    .map_err(|e| AppError::Io {
-        message: format!("Task join error: {}", e),
-        path: None,
-    })?
+pub fn open_file(path: &str, app: tauri::AppHandle) -> Result<(), AppError> {
+    use crate::shared::OpenFailedReason;
+    app.opener()
+        .open_path(path, None::<&str>)
+        .map_err(|e| AppError::OpenFailed {
+            path: PathBuf::from(path),
+            reason: OpenFailedReason::from_error(&e.to_string()),
+        })
 }
