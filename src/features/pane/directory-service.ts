@@ -7,6 +7,7 @@ export type ListDirectoryResult =
 export interface DirectoryService {
   listDirectory(path: string): Promise<ListDirectoryResult>;
   getInitialDirectory(): Promise<string>;
+  openFile(path: string): Promise<AppError | null>;
 }
 
 export function createDirectoryService(): DirectoryService {
@@ -26,6 +27,13 @@ export function createDirectoryService(): DirectoryService {
       const err = result.error;
       const msg = 'message' in err ? err.message : `${err.type}: ${err.path}`;
       throw new Error(msg);
+    },
+    async openFile(path: string): Promise<AppError | null> {
+      const result = await commands.openFile(path);
+      if (result.status === 'ok') {
+        return null;
+      }
+      return result.error;
     }
   };
 }

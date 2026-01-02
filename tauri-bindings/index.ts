@@ -20,6 +20,14 @@ async getInitialDirectory() : Promise<Result<string, AppError>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async openFile(path: string) : Promise<Result<null, AppError>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("open_file", { path }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -33,7 +41,7 @@ async getInitialDirectory() : Promise<Result<string, AppError>> {
 
 /** user-defined types **/
 
-export type AppError = { type: "Io"; message: string; path: string | null } | { type: "PermissionDenied"; path: string } | { type: "NotFound"; path: string } | { type: "InvalidPath"; message: string }
+export type AppError = { type: "Io"; message: string; path: string | null } | { type: "PermissionDenied"; path: string } | { type: "NotFound"; path: string } | { type: "InvalidPath"; message: string } | { type: "OpenFailed"; path: string; reason: string }
 export type FileEntry = { type: "File"; name: string; path: string; size: number; modified: number | null } | { type: "Directory"; name: string; path: string; modified: number | null } | { type: "Symlink"; name: string; path: string; size: number; modified: number | null; target: string; target_is_dir: boolean } | { type: "Unreadable"; name: string; path: string; reason: string }
 
 /** tauri-specta globals **/

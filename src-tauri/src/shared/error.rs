@@ -20,6 +20,9 @@ pub enum AppError {
 
     #[error("Invalid path: {message}")]
     InvalidPath { message: String },
+
+    #[error("Failed to open: {path} - {reason}")]
+    OpenFailed { path: PathBuf, reason: String },
 }
 
 impl From<std::io::Error> for AppError {

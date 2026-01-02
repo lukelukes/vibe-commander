@@ -8,7 +8,8 @@ pub fn run() {
     let builder =
         tauri_specta::Builder::<tauri::Wry>::new().commands(tauri_specta::collect_commands![
             listing::list_directory,
-            listing::get_initial_directory
+            listing::get_initial_directory,
+            listing::open_file
         ]);
 
     #[cfg(debug_assertions)]
@@ -21,6 +22,7 @@ pub fn run() {
         .expect("Failed to export TypeScript bindings");
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .invoke_handler(builder.invoke_handler())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -10,6 +10,8 @@ export function formatAppError(error: AppError): string {
       return error.message;
     case 'Io':
       return error.message;
+    case 'OpenFailed':
+      return `Failed to open ${error.path}: ${error.reason}`;
     default: {
       const _exhaustive: never = error;
       return `Unknown error: ${(error as AppError).type}`;
