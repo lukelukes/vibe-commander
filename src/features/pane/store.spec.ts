@@ -438,4 +438,217 @@ describe('createPaneStore', () => {
       );
     });
   });
+
+  describe('cursor management', () => {
+    it('setCursor clamps index to valid range', async () => {
+      const entries = [
+        createMockFileEntry('File', { name: 'a.txt', path: '/a.txt', size: 100, modified: 1000 }),
+        createMockFileEntry('File', { name: 'b.txt', path: '/b.txt', size: 100, modified: 1000 }),
+        createMockFileEntry('File', { name: 'c.txt', path: '/c.txt', size: 100, modified: 1000 })
+      ];
+
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          actions.setCursor(10);
+          expect(state.cursor).toBe(2);
+
+          actions.setCursor(-5);
+          expect(state.cursor).toBe(0);
+        }
+      );
+    });
+
+    it('setCursor does nothing while loading', async () => {
+      const service = createMockService();
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        ([state, actions]) => {
+          expect(state.loading).toBe(true);
+          actions.setCursor(5);
+          expect(state.cursor).toBe(-1);
+        }
+      );
+    });
+
+    it('cursor resets to 0 on navigation to new directory', async () => {
+      const entries = [
+        createMockFileEntry('File', { name: 'a.txt', path: '/a.txt', size: 100, modified: 1000 }),
+        createMockFileEntry('File', { name: 'b.txt', path: '/b.txt', size: 100, modified: 1000 })
+      ];
+
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          actions.setCursor(1);
+          expect(state.cursor).toBe(1);
+
+          await actions.navigateTo('/other');
+          expect(state.cursor).toBe(0);
+        }
+      );
+    });
+
+    it('cursor is -1 for empty directories', async () => {
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries: [] })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          expect(state.cursor).toBe(-1);
+        }
+      );
+    });
+  });
+
+  describe('navigation history', () => {
+    it('navigateTo adds current path to backStack', async () => {
+      const entries = [
+        createMockFileEntry('Directory', { name: 'sub', path: '/sub', modified: 1000 })
+      ];
+
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          expect(state.backStack).toEqual([]);
+          await actions.navigateTo('/sub');
+          expect(state.backStack).toEqual(['/home/user']);
+        }
+      );
+    });
+
+    it('navigateTo clears forwardStack', async () => {
+      const entries = [createMockFileEntry('Directory', { name: 'a', path: '/a', modified: 1000 })];
+
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          await actions.navigateTo('/a');
+          await actions.goBack();
+          expect(state.forwardStack.length).toBeGreaterThan(0);
+
+          await actions.navigateTo('/new');
+          expect(state.forwardStack).toEqual([]);
+        }
+      );
+    });
+
+    it('goBack navigates to previous directory', async () => {
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries: [] })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          const initialPath = state.path;
+          await actions.navigateTo('/other');
+          expect(state.path).toBe('/other');
+
+          await actions.goBack();
+          expect(state.path).toBe(initialPath);
+        }
+      );
+    });
+
+    it('goBack moves current path to forwardStack', async () => {
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries: [] })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          await actions.navigateTo('/other');
+          await actions.goBack();
+          expect(state.forwardStack).toContain('/other');
+        }
+      );
+    });
+
+    it('goBack does nothing with empty backStack', async () => {
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries: [] })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          const initialPath = state.path;
+          await actions.goBack();
+          expect(state.path).toBe(initialPath);
+        }
+      );
+    });
+
+    it('goForward navigates to next directory after goBack', async () => {
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries: [] })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          await actions.navigateTo('/other');
+          await actions.goBack();
+          await actions.goForward();
+          expect(state.path).toBe('/other');
+        }
+      );
+    });
+
+    it('goForward does nothing with empty forwardStack', async () => {
+      const service = createMockService({
+        listDirectory: vi.fn().mockResolvedValue({ ok: true, entries: [] })
+      });
+
+      await withReactiveRoot(
+        () => createPaneStore({ directoryService: service }),
+        async ([state, actions]) => {
+          await actions.initialize();
+
+          const initialPath = state.path;
+          await actions.goForward();
+          expect(state.path).toBe(initialPath);
+        }
+      );
+    });
+  });
 });

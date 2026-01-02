@@ -21,6 +21,12 @@ export function formatDate(timestamp: number | null): string {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
+export function isNavigableDirectory(entry: FileEntry): boolean {
+  if (entry.type === 'Directory') return true;
+  if (entry.type === 'Symlink' && entry.target_is_dir) return true;
+  return false;
+}
+
 export function getEntryIcon(entry: FileEntry): string {
   switch (entry.type) {
     case 'Unreadable':
@@ -122,8 +128,16 @@ export function FileList(props: FileListProps) {
 
   createEffect(() => {
     const cursor = props.cursor;
-    if (cursor >= 0 && rowRefs[cursor]) {
-      rowRefs[cursor].scrollIntoView({ block: 'nearest', behavior: 'instant' });
+    if (cursor < 0 || !rowRefs[cursor] || !bodyRef) return;
+
+    const row = rowRefs[cursor];
+    const rowTop = row.offsetTop;
+    const rowBottom = rowTop + row.offsetHeight;
+    const containerTop = bodyRef.scrollTop;
+    const containerBottom = containerTop + bodyRef.clientHeight;
+
+    if (rowTop < containerTop || rowBottom > containerBottom) {
+      row.scrollIntoView({ block: 'nearest', behavior: 'instant' });
     }
   });
 

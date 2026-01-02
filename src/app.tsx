@@ -26,6 +26,24 @@ function App() {
     right: null as string | null
   });
 
+  const leftHandler = createKeyboardHandler({
+    state: leftState,
+    actions: leftActions,
+    service: leftService,
+    setError: (error: string | null) => {
+      setErrorState('left', error);
+    }
+  });
+
+  const rightHandler = createKeyboardHandler({
+    state: rightState,
+    actions: rightActions,
+    service: rightService,
+    setError: (error: string | null) => {
+      setErrorState('right', error);
+    }
+  });
+
   const handleKeyDown = async (e: KeyboardEvent) => {
     if (e.key === 'Tab' && !e.ctrlKey && !e.altKey && !e.metaKey) {
       const target = e.target as HTMLElement;
@@ -36,15 +54,7 @@ function App() {
       }
     }
 
-    const isLeft = activePane() === 'left';
-    const state = isLeft ? leftState : rightState;
-    const actions = isLeft ? leftActions : rightActions;
-    const service = isLeft ? leftService : rightService;
-    const setError = (error: string | null) => {
-      setErrorState(isLeft ? 'left' : 'right', error);
-    };
-
-    const handler = createKeyboardHandler({ state, actions, service, setError });
+    const handler = activePane() === 'left' ? leftHandler : rightHandler;
     await handler(e);
   };
 

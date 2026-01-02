@@ -5,18 +5,12 @@ import { Show } from 'solid-js';
 
 import type { PaneActions, PaneState } from './store';
 
-import { FileList } from './file-list.tsx';
+import { FileList, isNavigableDirectory } from './file-list.tsx';
 
 export interface PaneProps {
   store: [PaneState, PaneActions];
   isActive: boolean;
   onActivate: () => void;
-}
-
-function isNavigableDirectory(entry: FileEntry): boolean {
-  if (entry.type === 'Directory') return true;
-  if (entry.type === 'Symlink' && entry.target_is_dir) return true;
-  return false;
 }
 
 export function Pane(props: PaneProps) {
@@ -40,8 +34,10 @@ export function Pane(props: PaneProps) {
       onClick={() => {
         props.onActivate();
       }}
-      onKeyDown={() => {
-        // Keyboard handled at app level
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          props.onActivate();
+        }
       }}
     >
       <PathBar path={state().path} onNavigate={(path) => void actions().navigateTo(path)} />

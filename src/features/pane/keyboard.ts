@@ -1,8 +1,7 @@
-import type { FileEntry } from '#tauri-bindings/index';
-
 import type { DirectoryService } from './directory-service';
 import type { PaneActions, PaneState } from './store';
 
+import { isNavigableDirectory } from './file-list';
 import { formatAppError } from './format-error';
 
 const PAGE_SIZE = 15;
@@ -12,16 +11,6 @@ export function getParentPath(path: string): string | null {
   if (normalized === '' || normalized === '/') return null;
   const parent = normalized.slice(0, normalized.lastIndexOf('/')) || '/';
   return parent;
-}
-
-function isNavigableDirectory(entry: FileEntry): boolean {
-  if (entry.type === 'Directory') return true;
-  if (entry.type === 'Symlink' && entry.target_is_dir) return true;
-  return false;
-}
-
-function getEntryPath(entry: FileEntry): string {
-  return entry.path;
 }
 
 export interface KeyboardHandlerOptions {
@@ -76,11 +65,11 @@ export function createKeyboardHandler(options: KeyboardHandlerOptions) {
         const entry = state.entries[state.cursor];
         if (!entry) break;
         if (isNavigableDirectory(entry)) {
-          await actions.navigateTo(getEntryPath(entry));
+          await actions.navigateTo(entry.path);
         } else if (entry.type === 'File' || entry.type === 'Symlink') {
-          const error = await service.openFile(getEntryPath(entry));
-          if (error) {
-            setError(formatAppError(error));
+          const result = await service.openFile(entry.path);
+          if (!result.ok) {
+            setError(formatAppError(result.error));
           }
         }
         break;

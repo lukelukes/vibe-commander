@@ -42,11 +42,20 @@ export function createPaneStore(options: PaneStoreOptions = {}): [PaneState, Pan
   });
 
   let currentNavigationId = 0;
+  const MAX_CURSOR_HISTORY = 500;
   const cursorHistory = new Map<string, number>();
 
   const saveCursorPosition = () => {
     if (state.path && state.cursor >= 0) {
+      cursorHistory.delete(state.path);
       cursorHistory.set(state.path, state.cursor);
+
+      if (cursorHistory.size > MAX_CURSOR_HISTORY) {
+        const firstKey = cursorHistory.keys().next().value;
+        if (firstKey !== undefined) {
+          cursorHistory.delete(firstKey);
+        }
+      }
     }
   };
 
