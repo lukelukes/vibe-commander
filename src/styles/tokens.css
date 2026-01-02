@@ -43,8 +43,8 @@
   --bg-subtle: var(--p-zinc-925);
   --bg-surface: var(--p-zinc-900);
   --bg-elevated: var(--p-zinc-850);
-  --bg-row-alt: oklch(1 0 0 / 0.02);
-  --bg-row-hover: oklch(1 0 0 / 0.05);
+  --bg-row-alt: oklch(1 0 0 / 0.015);
+  --bg-row-hover: oklch(1 0 0 / 0.04);
 
   --bg-selected: var(--p-blue-700);
   --bg-selected-inactive: var(--p-zinc-700);
@@ -83,8 +83,8 @@
     --bg-subtle: var(--p-zinc-50);
     --bg-surface: oklch(1 0 0);
     --bg-elevated: var(--p-zinc-50);
-    --bg-row-alt: oklch(0 0 0 / 0.02);
-    --bg-row-hover: oklch(0 0 0 / 0.04);
+    --bg-row-alt: oklch(0 0 0 / 0.015);
+    --bg-row-hover: oklch(0 0 0 / 0.03);
 
     --bg-selected: var(--p-blue-600);
     --bg-selected-inactive: var(--p-zinc-300);
@@ -122,8 +122,8 @@
   --bg-subtle: var(--p-zinc-50);
   --bg-surface: oklch(1 0 0);
   --bg-elevated: var(--p-zinc-50);
-  --bg-row-alt: oklch(0 0 0 / 0.02);
-  --bg-row-hover: oklch(0 0 0 / 0.04);
+  --bg-row-alt: oklch(0 0 0 / 0.015);
+  --bg-row-hover: oklch(0 0 0 / 0.03);
 
   --bg-selected: var(--p-blue-600);
   --bg-selected-inactive: var(--p-zinc-300);

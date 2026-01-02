@@ -36,7 +36,7 @@ const mockEntries: FileEntry[] = [
 
 describe('FileList', () => {
   it('renders all entries with header columns', async () => {
-    const screen = render(() => <FileList entries={mockEntries} />);
+    const screen = render(() => <FileList entries={mockEntries} cursor={0} />);
 
     await expect.element(screen.getByText('documents')).toBeVisible();
     await expect.element(screen.getByText('downloads')).toBeVisible();
@@ -49,7 +49,7 @@ describe('FileList', () => {
   });
 
   it('displays formatted file sizes', async () => {
-    const screen = render(() => <FileList entries={mockEntries} />);
+    const screen = render(() => <FileList entries={mockEntries} cursor={0} />);
 
     await expect.element(screen.getByText('1.0 KB')).toBeVisible();
     await expect.element(screen.getByText('2.5 MB')).toBeVisible();
@@ -64,7 +64,7 @@ describe('FileList', () => {
       })
     ];
 
-    const screen = render(() => <FileList entries={directoryOnly} />);
+    const screen = render(() => <FileList entries={directoryOnly} cursor={0} />);
 
     await expect.element(screen.getByText('my-folder')).toBeVisible();
     await expect.element(screen.getByText('—')).toBeVisible();
@@ -78,13 +78,13 @@ describe('FileList', () => {
       modified: JAN_15_2024_10_30_UTC
     });
 
-    const screen = render(() => <FileList entries={[emptyFile]} />);
+    const screen = render(() => <FileList entries={[emptyFile]} cursor={0} />);
 
     await expect.element(screen.getByText('0 B')).toBeVisible();
   });
 
   it('displays folder and file icons', async () => {
-    const screen = render(() => <FileList entries={mockEntries} />);
+    const screen = render(() => <FileList entries={mockEntries} cursor={0} />);
 
     await expect.element(screen.getByText('📁').first()).toBeVisible();
     await expect.element(screen.getByText('📄').first()).toBeVisible();
@@ -97,7 +97,7 @@ describe('FileList', () => {
       reason: 'Permission denied'
     });
 
-    const screen = render(() => <FileList entries={[unreadableEntry]} />);
+    const screen = render(() => <FileList entries={[unreadableEntry]} cursor={0} />);
 
     await expect.element(screen.getByText('unreadable.txt')).toBeVisible();
     await expect.element(screen.getByText('⚠️')).toBeVisible();
@@ -111,21 +111,19 @@ describe('FileList', () => {
       modified: JAN_15_2024_10_30_UTC
     });
 
-    const screen = render(() => <FileList entries={[normalEntry]} />);
+    const screen = render(() => <FileList entries={[normalEntry]} cursor={0} />);
 
     await expect.element(screen.getByText('normal.txt')).toBeVisible();
     await expect.element(screen.getByText('📄')).toBeVisible();
   });
 
-  it('renders header with empty body when no entries', async () => {
-    const screen = render(() => <FileList entries={[]} />);
+  it('renders header with empty message when no entries', async () => {
+    const screen = render(() => <FileList entries={[]} cursor={-1} />);
 
     await expect.element(screen.getByText('Name')).toBeVisible();
     await expect.element(screen.getByText('Size')).toBeVisible();
     await expect.element(screen.getByText('Modified')).toBeVisible();
-
-    const body = screen.getByTestId('file-list-body');
-    expect(body.element().children.length).toBe(0);
+    await expect.element(screen.getByText('Directory is empty')).toBeVisible();
   });
 
   it('scrolls by fixed amount on wheel down', () => {
@@ -138,7 +136,7 @@ describe('FileList', () => {
       })
     );
 
-    const screen = render(() => <FileList entries={manyEntries} />);
+    const screen = render(() => <FileList entries={manyEntries} cursor={0} />);
 
     const body = screen.getByTestId('file-list-body');
     const bodyElement = body.element() as HTMLElement;
@@ -164,7 +162,7 @@ describe('FileList', () => {
       })
     );
 
-    const screen = render(() => <FileList entries={manyEntries} />);
+    const screen = render(() => <FileList entries={manyEntries} cursor={0} />);
 
     const body = screen.getByTestId('file-list-body');
     const bodyElement = body.element() as HTMLElement;
@@ -190,7 +188,7 @@ describe('FileList', () => {
       })
     );
 
-    const screen = render(() => <FileList entries={manyEntries} />);
+    const screen = render(() => <FileList entries={manyEntries} cursor={0} />);
 
     const body = screen.getByTestId('file-list-body');
     const bodyElement = body.element() as HTMLElement;
@@ -215,7 +213,7 @@ describe('FileList', () => {
       })
     );
 
-    const screen = render(() => <FileList entries={manyEntries} />);
+    const screen = render(() => <FileList entries={manyEntries} cursor={0} />);
 
     const body = screen.getByTestId('file-list-body');
     const bodyElement = body.element() as HTMLElement;
