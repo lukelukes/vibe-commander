@@ -52,7 +52,13 @@ export function createMockIPC(config: MockIPCConfig = {}): void {
   });
 }
 
-const APP_ERROR_TYPES = ['Io', 'PermissionDenied', 'NotFound', 'InvalidPath'] as const;
+const APP_ERROR_TYPES = [
+  'Io',
+  'PermissionDenied',
+  'NotFound',
+  'InvalidPath',
+  'OpenFailed'
+] as const;
 
 function isAppError(value: unknown): value is AppError {
   return (
@@ -67,7 +73,7 @@ export function createAppError<T extends AppError['type']>(
   type: T,
   details: Omit<Extract<AppError, { type: T }>, 'type'>
 ): AppError {
-  return { path: '', type, message: 'error', ...details };
+  return { path: '', type, ...details } as AppError;
 }
 
 type FileEntryType = FileEntry['type'];

@@ -3,6 +3,7 @@ use std::env;
 use std::fs;
 use std::path::PathBuf;
 use std::time::UNIX_EPOCH;
+use tauri_plugin_opener::OpenerExt;
 
 #[tauri::command]
 #[specta::specta]
@@ -100,4 +101,16 @@ pub fn get_initial_directory() -> Result<PathBuf, AppError> {
         message: "Could not determine home directory".to_string(),
         path: None,
     })
+}
+
+#[tauri::command]
+#[specta::specta]
+pub fn open_file(path: &str, app: tauri::AppHandle) -> Result<(), AppError> {
+    use crate::shared::OpenFailedReason;
+    app.opener()
+        .open_path(path, None::<&str>)
+        .map_err(|e| AppError::OpenFailed {
+            path: PathBuf::from(path),
+            reason: OpenFailedReason::from_error(&e.to_string()),
+        })
 }
