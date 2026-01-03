@@ -1,4 +1,4 @@
-import { createSignal, onCleanup } from 'solid-js';
+import { createSignal, onCleanup, untrack } from 'solid-js';
 
 export type ThemeMode = 'system' | 'light' | 'dark';
 export type ResolvedTheme = 'light' | 'dark';
@@ -87,14 +87,14 @@ export function createThemeStore(options: ThemeStoreOptions = {}): ThemeStore {
 
   const cleanup = watchSystemTheme((theme) => {
     setSystemTheme(theme);
-    if (mode() === 'system') {
+    if (untrack(mode) === 'system') {
       applyTheme('system');
     }
   });
 
   onCleanup(cleanup);
 
-  applyTheme(mode());
+  applyTheme(untrack(mode));
 
   return { mode, resolved, setMode, toggle };
 }

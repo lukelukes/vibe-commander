@@ -51,18 +51,15 @@ pub enum AppError {
     },
 }
 
-impl From<std::io::Error> for AppError {
-    fn from(err: std::io::Error) -> Self {
+impl AppError {
+    pub fn from_io_error(err: std::io::Error, path: impl Into<PathBuf>) -> Self {
+        let path = path.into();
         match err.kind() {
-            std::io::ErrorKind::NotFound => AppError::NotFound {
-                path: PathBuf::new(),
-            },
-            std::io::ErrorKind::PermissionDenied => AppError::PermissionDenied {
-                path: PathBuf::new(),
-            },
+            std::io::ErrorKind::NotFound => AppError::NotFound { path },
+            std::io::ErrorKind::PermissionDenied => AppError::PermissionDenied { path },
             _ => AppError::Io {
                 message: err.to_string(),
-                path: None,
+                path: Some(path),
             },
         }
     }

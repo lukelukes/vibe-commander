@@ -48,4 +48,27 @@ describe('formatAppError', () => {
       expect(formatAppError(error)).toBe(message);
     });
   });
+
+  describe('OpenFailed', () => {
+    it.each([
+      { reason: 'PermissionDenied' as const, expected: 'permission denied' },
+      { reason: 'NotFound' as const, expected: 'file not found' },
+      { reason: 'NoDefaultApp' as const, expected: 'no default application' },
+      { reason: 'Unknown' as const, expected: 'unknown error' }
+    ])('formats $reason reason', ({ reason, expected }) => {
+      const error: AppError = { type: 'OpenFailed', path: '/path/to/file.txt', reason };
+      expect(formatAppError(error)).toBe(`Failed to open /path/to/file.txt: ${expected}`);
+    });
+
+    it('includes the file path in the message', () => {
+      const error: AppError = {
+        type: 'OpenFailed',
+        path: '/home/user/document.pdf',
+        reason: 'NoDefaultApp'
+      };
+      expect(formatAppError(error)).toBe(
+        'Failed to open /home/user/document.pdf: no default application'
+      );
+    });
+  });
 });
