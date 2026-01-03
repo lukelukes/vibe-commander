@@ -29,6 +29,7 @@
       "#features/*": ["./src/features/*"],
       "#bindings/*": ["./src/bindings/*"],
       "#core/*": ["./src/core/*"],
+      "#lib/*": ["./src/lib/*"],
       "#stores/*": ["./src/stores/*"],
       "#testing/*": ["./src/testing/*"],
       "#vitest-browser-solid": ["./vitest-browser-solid/*"],

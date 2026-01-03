@@ -112,6 +112,10 @@ export function FileList(props: FileListProps) {
   let bodyRef!: HTMLDivElement;
   const rowRefs: HTMLDivElement[] = [];
 
+  createEffect(() => {
+    rowRefs.length = 0;
+  });
+
   const handleWheel = (e: WheelEvent) => {
     if (!bodyRef) return;
     e.preventDefault();

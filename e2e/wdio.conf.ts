@@ -42,6 +42,9 @@ export const config: Options.Testrunner = {
     testFixture = await createTestFixture({
       'documents/': {},
       'documents/notes.txt': 'some notes',
+      'documents/work/': {},
+      'documents/work/report.pdf': 'report content',
+      'documents/work/data.csv': 'data content',
       'downloads/': {},
       'file.txt': 'hello world',
       'readme.md': '# Test',

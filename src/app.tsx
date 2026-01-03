@@ -4,7 +4,8 @@ import { createDirectoryService } from '#features/pane/directory-service';
 import { createKeyboardHandler } from '#features/pane/keyboard';
 import { Pane } from '#features/pane/pane';
 import { createPaneStore } from '#features/pane/store';
-import { createSignal, onCleanup, onMount } from 'solid-js';
+import { logger } from '#lib/logger';
+import { Show, createSignal, onCleanup, onMount } from 'solid-js';
 import { createStore } from 'solid-js/store';
 
 initializeTheme();
@@ -21,7 +22,7 @@ function App() {
   const [leftState, leftActions] = leftStore;
   const [rightState, rightActions] = rightStore;
 
-  const [_errorState, setErrorState] = createStore({
+  const [errorState, setErrorState] = createStore({
     left: null as string | null,
     right: null as string | null
   });
@@ -59,11 +60,18 @@ function App() {
   };
 
   const keyDownListener = (e: KeyboardEvent) => {
-    void handleKeyDown(e);
+    handleKeyDown(e).catch((error: unknown) => {
+      logger.error('Keyboard handler failed:', error);
+    });
   };
 
   onMount(() => {
-    void Promise.all([leftActions.initialize(), rightActions.initialize()]);
+    Promise.all([leftActions.initialize(), rightActions.initialize()]).catch((error: unknown) => {
+      logger.error('Failed to initialize panes:', error);
+      const message = error instanceof Error ? error.message : 'Initialization failed';
+      setErrorState('left', message);
+      setErrorState('right', message);
+    });
     window.addEventListener('keydown', keyDownListener);
   });
 
@@ -77,21 +85,39 @@ function App() {
         class="flex-1 flex flex-col bg-bg-surface text-text overflow-hidden border-r border-border"
         data-testid="pane-left"
       >
-        <Pane
-          store={leftStore}
-          isActive={activePane() === 'left'}
-          onActivate={() => setActivePane('left')}
-        />
+        <Show
+          when={errorState.left}
+          fallback={
+            <Pane
+              store={leftStore}
+              isActive={activePane() === 'left'}
+              onActivate={() => setActivePane('left')}
+            />
+          }
+        >
+          <div class="flex items-center justify-center h-full p-4">
+            <div class="text-error">{errorState.left}</div>
+          </div>
+        </Show>
       </div>
       <div
         class="flex-1 flex flex-col bg-bg-surface text-text overflow-hidden"
         data-testid="pane-right"
       >
-        <Pane
-          store={rightStore}
-          isActive={activePane() === 'right'}
-          onActivate={() => setActivePane('right')}
-        />
+        <Show
+          when={errorState.right}
+          fallback={
+            <Pane
+              store={rightStore}
+              isActive={activePane() === 'right'}
+              onActivate={() => setActivePane('right')}
+            />
+          }
+        >
+          <div class="flex items-center justify-center h-full p-4">
+            <div class="text-error">{errorState.right}</div>
+          </div>
+        </Show>
       </div>
     </div>
   );

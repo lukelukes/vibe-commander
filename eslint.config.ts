@@ -3,7 +3,7 @@ import solid from 'eslint-plugin-solid/configs/typescript';
 
 export default [
   {
-    ignores: ['**/*.config.ts']
+    ignores: ['**/*.config.ts', '**/*.conf.ts', 'e2e']
   },
   {
     files: ['**/*.{ts,tsx}'],

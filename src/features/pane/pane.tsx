@@ -17,8 +17,6 @@ export function Pane(props: PaneProps) {
   const state = () => props.store[0];
   const actions = () => props.store[1];
 
-  const cursor = () => state().cursor;
-
   const handleNavigate = (entry: FileEntry) => {
     if (isNavigableDirectory(entry)) {
       void actions().navigateTo(entry.path);
@@ -60,7 +58,7 @@ export function Pane(props: PaneProps) {
       <Show when={!state().loading && !state().error}>
         <FileList
           entries={state().entries}
-          cursor={cursor()}
+          cursor={state().cursor}
           onSelect={(index) => {
             actions().setCursor(index);
           }}
