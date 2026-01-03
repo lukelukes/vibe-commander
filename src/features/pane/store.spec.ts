@@ -1,5 +1,5 @@
 import { createMockFileEntry } from '#testing/mock-ipc-factory';
-import { createRoot } from 'solid-js';
+import { withReactiveRoot } from '#testing/test-utils';
 import { vi, describe, it, expect } from 'vitest';
 
 import type { DirectoryService, ListDirectoryResult } from './directory-service';
@@ -13,35 +13,6 @@ function createMockService(overrides: Partial<DirectoryService> = {}): Directory
     openFile: vi.fn().mockResolvedValue({ ok: true }),
     ...overrides
   };
-}
-
-function unwrapError(err: unknown) {
-  if (err instanceof Error) return err;
-
-  if (typeof err === 'object' && err !== null) {
-    return new Error(JSON.stringify(err));
-  }
-
-  return new Error(String(err));
-}
-
-async function withReactiveRoot<T>(
-  setup: () => T,
-  test: (ctx: T) => Promise<void> | void
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    createRoot(async (dispose) => {
-      try {
-        const ctx = setup();
-        await test(ctx);
-        resolve();
-      } catch (e) {
-        reject(unwrapError(e));
-      } finally {
-        dispose();
-      }
-    });
-  });
 }
 
 describe('createPaneStore', () => {

@@ -79,7 +79,7 @@ fn build_file_entry(entry: &fs::DirEntry) -> FileEntry {
     }
 }
 
-fn sort_entries(entries: &mut [FileEntry]) {
+pub fn sort_entries(entries: &mut [FileEntry]) {
     entries.sort_by(|a, b| match (a.is_dir(), b.is_dir()) {
         (true, false) => std::cmp::Ordering::Less,
         (false, true) => std::cmp::Ordering::Greater,

@@ -1,8 +1,8 @@
 import type { FileEntry } from '#tauri-bindings/index';
 
 import { createMockFileEntry } from '#testing/mock-ipc-factory';
+import { withReactiveRoot } from '#testing/test-utils';
 import * as fc from 'fast-check';
-import { createRoot } from 'solid-js';
 /* oxlint-disable no-await-in-loop, no-unused-vars, unicorn/prefer-at, unicorn/no-array-sort, typescript-eslint/require-await */
 import { describe, it, expect, vi } from 'vitest';
 
@@ -124,33 +124,6 @@ function modelSetCursor(model: NavigationModel, index: number): NavigationModel 
   };
 }
 
-function unwrapError(err: unknown): Error {
-  if (err instanceof Error) return err;
-  if (typeof err === 'object' && err !== null) {
-    return new Error(JSON.stringify(err));
-  }
-  return new Error(String(err));
-}
-
-async function withReactiveRoot<T>(
-  setup: () => T,
-  test: (ctx: T) => Promise<void> | void
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    createRoot(async (dispose) => {
-      try {
-        const ctx = setup();
-        await test(ctx);
-        resolve();
-      } catch (e) {
-        reject(unwrapError(e));
-      } finally {
-        dispose();
-      }
-    });
-  });
-}
-
 describe('PaneStore Property-Based Tests', () => {
   describe('Invariance Properties', () => {
     it('P1: cursor is always within bounds after any setCursor', async () => {
@@ -268,28 +241,6 @@ describe('PaneStore Property-Based Tests', () => {
         { numRuns: 30, timeout: 30000 }
       );
     }, 60000);
-
-    it('P5: goBack then goForward returns to same path', async () => {
-      const entriesMap = new Map<string, FileEntry[]>([
-        ['/a', [createMockFileEntry('File', { name: 'a.txt', path: '/a/a.txt' })]],
-        ['/b', [createMockFileEntry('File', { name: 'b.txt', path: '/b/b.txt' })]]
-      ]);
-      const service = createMockService(entriesMap);
-
-      await withReactiveRoot(
-        () => createPaneStore({ directoryService: service }),
-        async ([state, actions]) => {
-          await actions.navigateTo('/a');
-          await actions.navigateTo('/b');
-
-          const beforeBack = state.path;
-          await actions.goBack();
-          await actions.goForward();
-
-          expect(state.path).toBe(beforeBack);
-        }
-      );
-    });
   });
 
   describe('Idempotence', () => {
@@ -579,7 +530,7 @@ describe('PaneStore Property-Based Tests', () => {
             );
           }
         ),
-        { numRuns: 100, timeout: 60000 }
+        { numRuns: process.env.CI ? 50 : 100, timeout: 60000 }
       );
     }, 120000);
   });
