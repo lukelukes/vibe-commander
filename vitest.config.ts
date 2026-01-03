@@ -11,8 +11,19 @@ export default defineConfig({
       {
         test: {
           include: ['src/**/*.{test,spec}.ts'],
+          exclude: ['src/**/*.property.spec.ts'],
           name: 'unit',
           environment: 'node',
+          setupFiles: ['./src/testing/setup.ts']
+        }
+      },
+      {
+        test: {
+          include: ['src/**/*.property.spec.ts'],
+          name: 'property',
+          environment: 'node',
+          testTimeout: 120000,
+          hookTimeout: 30000,
           setupFiles: ['./src/testing/setup.ts']
         }
       },
