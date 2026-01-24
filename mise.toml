@@ -1,5 +1,5 @@
 [tools]
 ast-grep = "latest"
-bun = "1.3.5"
-prek = "latest"
-rust = "1.92.0"
+bun = "1.3.6"
+prek = "0.3.0"
+rust = "1.93.0"
