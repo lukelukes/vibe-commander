@@ -12,6 +12,7 @@ pub enum OpenFailedReason {
 }
 
 impl OpenFailedReason {
+    #[must_use]
     pub fn from_error(err: &str) -> Self {
         let lower = err.to_lowercase();
         if lower.contains("permission") || lower.contains("access denied") {
@@ -52,7 +53,7 @@ pub enum AppError {
 }
 
 impl AppError {
-    pub fn from_io_error(err: std::io::Error, path: impl Into<PathBuf>) -> Self {
+    pub fn from_io_error(err: &std::io::Error, path: impl Into<PathBuf>) -> Self {
         let path = path.into();
         match err.kind() {
             std::io::ErrorKind::NotFound => AppError::NotFound { path },

@@ -1,0 +1,5 @@
+allow-private-module-inception = true
+avoid-breaking-exported-api = false
+disallowed-methods = [
+    { path = "serde_json::from_reader", reason = "Parsing from a buffer is much slower than first reading the buffer into a Vec/String. Use `serde_json::from_slice` instead." },
+]

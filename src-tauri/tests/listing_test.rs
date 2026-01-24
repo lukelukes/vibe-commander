@@ -1,3 +1,5 @@
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic)]
+
 mod common;
 
 use common::TestFixture;
@@ -19,7 +21,7 @@ fn list_directory_returns_sorted_entries() {
     assert!(result.is_ok());
 
     let entries = result.unwrap();
-    let names: Vec<&str> = entries.iter().map(|e| e.name()).collect();
+    let names: Vec<&str> = entries.iter().map(vibe_commander_lib::shared::FileEntry::name).collect();
 
     assert_eq!(
         names,
@@ -67,7 +69,7 @@ fn list_directory_includes_broken_symlinks() {
     assert!(result.is_ok());
 
     let entries = result.unwrap();
-    let names: Vec<&str> = entries.iter().map(|e| e.name()).collect();
+    let names: Vec<&str> = entries.iter().map(vibe_commander_lib::shared::FileEntry::name).collect();
 
     assert!(names.contains(&"valid.txt"));
     assert!(names.contains(&"broken_link"));
@@ -130,7 +132,7 @@ fn list_directory_handles_unicode_paths() {
     assert!(result.is_ok());
 
     let entries = result.unwrap();
-    let names: Vec<&str> = entries.iter().map(|e| e.name()).collect();
+    let names: Vec<&str> = entries.iter().map(vibe_commander_lib::shared::FileEntry::name).collect();
 
     assert!(names.contains(&"日本語.txt"));
     assert!(names.contains(&"émoji_🎉.txt"));

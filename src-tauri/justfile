@@ -1,0 +1,54 @@
+default: help
+
+alias b := build
+alias c := check
+alias f := fmt
+alias r := run
+alias t := test
+
+check: fmt-check clippy test
+
+fmt:
+    cargo fmt
+
+fmt-check:
+    cargo fmt --all -- --check
+
+clippy:
+    cargo clippy --all-targets -- -D warnings
+
+clippy-warn:
+    cargo clippy --all-targets --all-features
+
+clippy-json:
+    cargo clippy --all-targets --message-format=json
+
+watch:
+    bacon
+
+build:
+    cargo build --release
+
+run *ARGS:
+    RUST_LOG=vibe_commander=trace cargo run -- {{ARGS}}
+
+ci: fmt check
+    @echo "All checks passed"
+
+fix:
+    cargo clippy --all-targets --all-features --fix --allow-dirty --allow-staged
+
+clean:
+    cargo clean
+
+test *ARGS:
+    cargo nextest run {{ARGS}}
+
+deny:
+    cargo deny check
+
+install-tooling:
+    mise install
+
+help:
+    just --list

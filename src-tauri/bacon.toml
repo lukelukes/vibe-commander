@@ -1,0 +1,29 @@
+default_job = "check"
+
+[jobs.check]
+command = ["cargo", "check", "--color", "always"]
+
+[jobs.clippy]
+command = ["cargo", "clippy", "--all-targets", "--color", "always", "--", "-D", "warnings"]
+
+[jobs.test]
+command = ["cargo", "test", "--color", "always"]
+
+[jobs.nextest]
+command = ["cargo", "nextest", "run", "--color", "always"]
+
+[jobs.run]
+command = ["cargo", "run"]
+need_stdout = true
+allow_warnings = true
+on_change_strategy = "kill_then_restart"
+
+[jobs.doc]
+command = ["cargo", "doc", "--no-deps", "--color", "always"]
+
+[keybindings]
+c = "job:clippy"
+t = "job:test"
+n = "job:nextest"
+r = "job:run"
+d = "job:doc"

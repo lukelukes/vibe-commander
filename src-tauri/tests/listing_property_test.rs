@@ -1,3 +1,5 @@
+#![allow(clippy::uninlined_format_args, clippy::redundant_clone, clippy::str_to_string)]
+
 use proptest::prelude::*;
 use std::path::PathBuf;
 use vibe_commander_lib::features::listing::sort_entries;

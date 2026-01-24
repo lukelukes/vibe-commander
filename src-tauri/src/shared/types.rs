@@ -33,6 +33,7 @@ pub enum FileEntry {
 }
 
 impl FileEntry {
+    #[must_use]
     pub fn name(&self) -> &str {
         match self {
             FileEntry::File { name, .. }
@@ -42,6 +43,7 @@ impl FileEntry {
         }
     }
 
+    #[must_use]
     pub fn path(&self) -> &Path {
         match self {
             FileEntry::File { path, .. }
@@ -51,6 +53,7 @@ impl FileEntry {
         }
     }
 
+    #[must_use]
     pub fn is_dir(&self) -> bool {
         matches!(
             self,

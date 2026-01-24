@@ -1,0 +1,14 @@
+[files]
+ignore-files = true
+ignore-hidden = false
+extend-exclude = [
+    ".git/",
+    "target/",
+    "node_modules/",
+    "Cargo.lock",
+    "bun.lock",
+    "*.lock",
+]
+
+[default]
+check-filename = true

@@ -7,6 +7,7 @@ pub struct TestFixture {
     pub dir: TempDir,
 }
 
+#[allow(clippy::expect_used)]
 impl TestFixture {
     pub fn new() -> Self {
         Self {

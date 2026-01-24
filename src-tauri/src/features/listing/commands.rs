@@ -20,7 +20,7 @@ pub fn list_directory(path: &str) -> Result<Vec<FileEntry>, AppError> {
     })?;
 
     let mut entries: Vec<FileEntry> = read_dir
-        .filter_map(|entry| entry.ok())
+        .filter_map(std::result::Result::ok)
         .map(|entry| build_file_entry(&entry))
         .collect();
 
@@ -45,7 +45,7 @@ fn build_file_entry(entry: &fs::DirEntry) -> FileEntry {
     };
 
     let file_type = entry.file_type().ok();
-    let is_symlink = file_type.map(|ft| ft.is_symlink()).unwrap_or(false);
+    let is_symlink = file_type.is_some_and(|ft| ft.is_symlink());
 
     let modified = metadata
         .modified()
@@ -98,11 +98,12 @@ pub fn get_initial_directory() -> Result<PathBuf, AppError> {
     }
 
     dirs::home_dir().ok_or_else(|| AppError::Io {
-        message: "Could not determine home directory".to_string(),
+        message: "Could not determine home directory".to_owned(),
         path: None,
     })
 }
 
+#[allow(clippy::needless_pass_by_value)]
 #[tauri::command]
 #[specta::specta]
 pub fn open_file(path: &str, app: tauri::AppHandle) -> Result<(), AppError> {

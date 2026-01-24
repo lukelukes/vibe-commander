@@ -1,0 +1,13 @@
+[build]
+rustflags = ["-C", "linker=clang", "-C", "link-arg=-fuse-ld=mold"]
+rustc-wrapper = "sccache"
+
+[alias]
+t = "test"
+c = "check"
+b = "build"
+r = "run"
+cl = "clippy --all-targets --all-features -- -D warnings"
+
+[env]
+RUST_BACKTRACE = "1"
