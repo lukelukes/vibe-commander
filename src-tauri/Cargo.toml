@@ -38,44 +38,5 @@ proptest = "1.9.0"
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-window-state = "2"
 
-[lints.rust]
-unsafe_code = "warn"
-
-[lints.clippy]
-all = { level = "warn", priority = -1 }
-pedantic = { level = "warn", priority = -1 }
-dbg_macro = "deny"
-todo = "warn"
-unwrap_used = "warn"
-expect_used = "warn"
-redundant_clone = "deny"
-disallowed_methods = "deny"
-panic = "warn"
-str_to_string = "warn"
-clone_on_ref_ptr = "warn"
-too_many_arguments = "allow"
-type_complexity = "allow"
-missing_errors_doc = "allow"
-missing_panics_doc = "allow"
-module_name_repetitions = "allow"
-
-[profile.dev]
-opt-level = 1
-debug = true
-incremental = true
-
-[profile.dev.package."*"]
-opt-level = 2
-
-[profile.release]
-opt-level = 3
-lto = "thin"
-codegen-units = 16
-strip = "debuginfo"
-
-[profile.release-perf]
-inherits = "release"
-lto = "fat"
-codegen-units = 1
-panic = "abort"
-strip = "symbols"
+[lints]
+workspace = true
