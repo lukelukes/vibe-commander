@@ -1,6 +1,10 @@
 [workspace]
 resolver = "2"
-members = ["crates/vibe-commander-core", "crates/vibe-commander-tauri"]
+members = [
+    "crates/vibe-commander-core",
+    "crates/vibe-commander-tauri",
+    "crates/vibe-commander-gpui",
+]
 
 [workspace.lints.rust]
 unsafe_code = "warn"
