@@ -6,8 +6,8 @@
 
 use proptest::prelude::*;
 use std::path::PathBuf;
-use vibe_commander_lib::features::listing::sort_entries;
-use vibe_commander_lib::shared::types::FileEntry;
+use vibe_commander_core::listing::sort_entries;
+use vibe_commander_core::types::FileEntry;
 
 fn is_sorted(entries: &[FileEntry]) -> bool {
     entries.windows(2).all(|pair| {

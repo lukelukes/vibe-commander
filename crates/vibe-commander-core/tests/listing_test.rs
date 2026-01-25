@@ -4,8 +4,8 @@ mod common;
 
 use common::TestFixture;
 use std::os::unix::fs::PermissionsExt;
-use vibe_commander_lib::features::listing::list_directory;
-use vibe_commander_lib::shared::{AppError, FileEntry};
+use vibe_commander_core::listing::list_directory;
+use vibe_commander_core::{AppError, FileEntry};
 
 #[test]
 fn list_directory_returns_sorted_entries() {
@@ -23,7 +23,7 @@ fn list_directory_returns_sorted_entries() {
     let entries = result.unwrap();
     let names: Vec<&str> = entries
         .iter()
-        .map(vibe_commander_lib::shared::FileEntry::name)
+        .map(vibe_commander_core::FileEntry::name)
         .collect();
 
     assert_eq!(
@@ -74,7 +74,7 @@ fn list_directory_includes_broken_symlinks() {
     let entries = result.unwrap();
     let names: Vec<&str> = entries
         .iter()
-        .map(vibe_commander_lib::shared::FileEntry::name)
+        .map(vibe_commander_core::FileEntry::name)
         .collect();
 
     assert!(names.contains(&"valid.txt"));
@@ -140,7 +140,7 @@ fn list_directory_handles_unicode_paths() {
     let entries = result.unwrap();
     let names: Vec<&str> = entries
         .iter()
-        .map(vibe_commander_lib::shared::FileEntry::name)
+        .map(vibe_commander_core::FileEntry::name)
         .collect();
 
     assert!(names.contains(&"日本語.txt"));
