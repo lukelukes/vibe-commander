@@ -18,7 +18,7 @@ pub fn run() {
         .export(
             specta_typescript::Typescript::default()
                 .bigint(specta_typescript::BigIntExportBehavior::Number),
-            "../tauri-bindings/index.ts",
+            "../../tauri-bindings/index.ts",
         )
         .expect("Failed to export TypeScript bindings");
 
