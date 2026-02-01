@@ -1,4 +1,7 @@
-default: help
+set quiet
+
+default:
+    @just --list --unsorted
 
 alias b := build
 alias c := check
@@ -6,49 +9,57 @@ alias f := fmt
 alias r := run
 alias t := test
 
-check: fmt-check clippy test
+# --- dev ---
 
-fmt:
-    cargo fmt
+[group('dev')]
+run *ARGS:
+    RUST_LOG=vibe_commander=trace cargo run -- {{ ARGS }}
 
-fmt-check:
-    cargo fmt --all -- --check
-
-clippy:
-    cargo clippy --all-targets -- -D warnings
-
-clippy-warn:
-    cargo clippy --all-targets --all-features
-
-clippy-json:
-    cargo clippy --all-targets --message-format=json
-
-watch:
-    bacon
-
+[group('dev')]
 build:
     cargo build --release
 
-run *ARGS:
-    RUST_LOG=vibe_commander=trace cargo run -- {{ARGS}}
+[group('dev')]
+watch:
+    bacon
 
-ci: fmt check
-    @echo "All checks passed"
-
-fix:
-    cargo clippy --all-targets --all-features --fix --allow-dirty --allow-staged
-
+[group('dev')]
 clean:
     cargo clean
 
-test *ARGS:
-    cargo nextest run {{ARGS}}
+# --- check ---
 
+[group('check')]
+check: fmt-check clippy test
+
+[group('check')]
+fmt:
+    cargo fmt
+
+[group('check')]
+fmt-check:
+    cargo fmt --all -- --check
+
+[group('check')]
+clippy:
+    cargo clippy --all-targets -- -D warnings
+
+[group('check')]
+test *ARGS:
+    cargo nextest run {{ ARGS }}
+
+# --- fix ---
+
+[group('fix')]
+fix:
+    cargo clippy --all-targets --all-features --fix --allow-dirty --allow-staged
+
+# --- tools ---
+
+[group('tools')]
 deny:
     cargo deny check
 
+[group('tools')]
 install-tooling:
     mise install
-
-help:
-    just --list
