@@ -1,8 +1,23 @@
-default:
-    @just --list
+set quiet
 
+default:
+    @just --list --unsorted
+
+alias b := build
+alias r := run
+
+[group('dev')]
 build:
     cargo build -p vibe-commander-gpui
 
+[group('dev')]
 run:
     cargo run -p vibe-commander-gpui
+
+[group('check')]
+clippy:
+    cargo clippy -p vibe-commander-gpui --all-targets -- -D warnings
+
+[group('check')]
+test:
+    cargo test -p vibe-commander-gpui
